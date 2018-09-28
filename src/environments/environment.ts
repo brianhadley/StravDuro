@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  connectionStrings: {
+    redirectUrl: "http://localhost:4200/redirect",
+    authDomain: "stravduro.auth0.com"
+  }
 };
 
 /*
