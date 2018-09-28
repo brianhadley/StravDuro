@@ -6,6 +6,7 @@
 //6. make sure everything is updated
 var athleteRepo = require("../repository/athlete.repo");
 var activityRepo = require("../repository/activity.repo");
+var duroRepo = require("../repository/duro.repo");
 
 //cleverness from stackoverflow
 //https://stackoverflow.com/questions/17500312/is-there-some-way-i-can-join-the-contents-of-two-javascript-arrays-much-like-i/17500836
@@ -53,83 +54,16 @@ updateService.evaluateSegments = function(user, results) {
 
   console.log("segments", segs);
   console.log("results", results);
-  console.log("user duros", user.duros[0].bestEfforts);
+//  console.log("user duros", user.duros[0].bestEfforts);
 
-  const segresultjoin = equijoin(
-    results,
-    segs,
-    "segmentId",
-    "id",
-    ({ activityId, segmentEffortId, segmentDuration }, { id, name }) => {
-      return {
-        _segmentUserComposite: user._id + "_" + id,
-        _userId: user._id,
-        _segmentId: id,
-        _segmentName: name,
-        _activityId: activityId,
-        _segmentEffortId: segmentEffortId,
-        _segmentDuration: segmentDuration
-      };
-    }
-  );
+  var reducedResults = results.reduce((p,c)=>{if (p[c.segmentId]){if (p[c.segmentId].segmentDuration>c.segmentDuration) p[c.segmentId] = c;} else {p[c.segmentId] = c;} return p; },{});
+
   //todo: need to reduce this to best per segmentId
-  console.log("matches", segresultjoin);
+  
+  segs.forEach(s=> console.log(s.name + " matches", reducedResults[s.id]));
 
-  var testDuro = [ { segmentUserComposite: '5ba902f7889a2153386654c9_629052',
-  userId: "5ba902f7889a2153386654c9",
-  segmentId: 629052,
-  segmentName: 'Upper lot up 8 to lookout',
-  activityId: 1865600243,
-  segmentEffortId: 46809301386,
-  segmentDuration: 715 },
-{ segmentUserComposite: '5ba902f7889a2153386654c9_628544',
-  userId: "5ba902f7889a2153386654c9",
-  segmentId: 628544,
-  segmentName: 'Cave Descent',
-  activityId: 1858645220,
-  segmentEffortId: 46605746040,
-  segmentDuration: 366 } ];
-
-  var newResults = equijoin(
-    testDuro,
-    segresultjoin,
-    "segmentUserComposite",
-    "_segmentUserComposite",
-    (        
-      {
-        segmentUserComposite,
-        userId,
-        segmentId,
-        segmentName,
-        activityId,
-        segmentEffortId,
-        segmentDuration
-      },
-      {
-        _segmentUserComposite,
-        _userId,
-        _segmentId,
-        _segmentName,
-        _activityId,
-        _segmentEffortId,
-        _segmentDuration
-      }      
-    ) => {
-      var useNew = _segmentUserComposite===segmentUserComposite && _segmentDuration < (segmentDuration?segmentDuration:9999999999);
-      console.log('useNew?',useNew);
-      return {
-        segmentUserComposite: useNew?_segmentUserComposite:segmentUserComposite,
-        userId: useNew?_userId:userId,
-        segmentId: useNew?_segmentId:segmentId,
-        segmentName: useNew?_segmentName:segmentName,
-        activityId: useNew ? _activityId : activityId,
-        segmentEffortId: useNew ? _segmentEffortId : segmentEffortId,
-        segmentDuration: useNew ? _segmentDuration : segmentDuration
-      };
-    }
-  );
-
-  console.log('new results',newResults);
+  
+  //console.log('new results',newResults);
 };
 
 module.exports = updateService;
