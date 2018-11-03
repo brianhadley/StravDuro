@@ -6,7 +6,8 @@ export class User {
   lastName: String
   stravaAthleteInfo: {
     userName: String,
-    stravaUserId: String
+    stravaUserId: String,
+    profile: String
   }
   duros: [Duro]
 }

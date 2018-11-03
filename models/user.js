@@ -8,7 +8,9 @@ var UserSchema = new mongoose.Schema({
   lastName: String,
   stravaAthleteInfo: {
     userName: String,
-    stravaUserId: String
+    stravaUserId: String,
+    profile: String,
+    email: String
   },
   duros: [{type: mongoose.Schema.Types.ObjectId,  ref: 'duro'}],
   lastProcessed: Date

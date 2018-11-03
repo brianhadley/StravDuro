@@ -1,0 +1,2 @@
+
+<div *ngIf="duroResults | async as myduros"><div *ngFor="let result of myduros.myDuros"><span>{{result.myDuroName}}</span><br/><span>My Rank:&nbsp;{{result.myDuroRank}}</span><br/><span>Total&nbsp;time:&nbsp;{{result.myDuroTime}}</span></div></div>

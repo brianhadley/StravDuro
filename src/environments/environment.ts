@@ -4,9 +4,13 @@
 
 export const environment = {
   production: false,
+  audience: "http://localhost:4200",
   connectionStrings: {
     redirectUrl: "http://localhost:4200/redirect",
     authDomain: "stravduro.auth0.com"
+  },
+  endpoints: {
+    userDuroSummary: '/api/userdurosummary/'
   }
 };
 

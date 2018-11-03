@@ -9,11 +9,15 @@ activityRepo.getActivitySegmentDetailForUser = function(user, done) {
   var after = user.lastProcessed? user.lastProcessed : new Date() / 1000 - 86400 * 5;
   var before = new Date() / 1000;
 
+  console.log('value passed to after param: ', after);
+
   strava.activities.getSummary(
     { access_token: user.stravaToken, before: before, after: after },
     (err, result) => {
-      console.log('error',err);
-      user.lastProcessed = before;
+      
+      user.lastProcessed = before * 1000;
+
+      console.log('lastProcessed', user.lastProcessed);
       //todo: save user
       this.getActivitySegmentInfo(user, result.map(result => result.id), done);
     }

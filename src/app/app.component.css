@@ -1,12 +1,28 @@
-.header {    
-    background: #2F4454;
-    color: #cedfff;
-  }
+.site-container {
+  display: grid;    
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr auto 1fr;  
+  column-gap: 2rem;
+  row-gap: 1rem;
+}
 
-  /*
-  more colors
-  #2E151B
-  #DA7B93
-  #376E6F
-  #1C3334
-  */
+header {
+  grid-column: span 12;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #263238;  
+}
+
+
+
+aside {  
+  grid-column: 3 / span 2;  
+    
+}
+main {
+  grid-column: 5 / span 6;
+  
+}
+
+

@@ -8,27 +8,6 @@ var athleteRepo = require("../repository/athlete.repo");
 var activityRepo = require("../repository/activity.repo");
 var duroRepo = require("../repository/duro.repo");
 
-//cleverness from stackoverflow
-//https://stackoverflow.com/questions/17500312/is-there-some-way-i-can-join-the-contents-of-two-javascript-arrays-much-like-i/17500836
-const equijoin = (xs, ys, primary, foreign, sel) => {
-  const ix = xs.reduce(
-    (
-      ix,
-      row // loop through m items
-    ) => ix.set(row[primary], row), // populate index for primary table
-    new Map()
-  ); // create an index for primary table
-
-  return ys.map((
-    row // loop through n items
-  ) =>
-    sel(
-      ix.has(row[foreign]) ? ix.get(row[foreign]) : {}, // get corresponding row from primary (modified for "left join")
-      row
-    )
-  ); // select only the columns you need
-};
-
 var updateService = {};
 
 updateService.start = function() {
@@ -52,18 +31,54 @@ updateService.evaluateSegments = function(user, results) {
   );
   segs = [].concat(...segs);
 
-  console.log("segments", segs);
-  console.log("results", results);
-//  console.log("user duros", user.duros[0].bestEfforts);
+  console.log("user", user);
+  //console.log("results", results);
+  //  console.log("user duros", user.duros[0].bestEfforts);
 
-  var reducedResults = results.reduce((p,c)=>{if (p[c.segmentId]){if (p[c.segmentId].segmentDuration>c.segmentDuration) p[c.segmentId] = c;} else {p[c.segmentId] = c;} return p; },{});
+  var reducedResults = results.reduce((p, c) => {
+    if (p[c.segmentId]) {
+      if (p[c.segmentId].segmentDuration > c.segmentDuration)
+        p[c.segmentId] = c;
+    } else {
+      p[c.segmentId] = c;
+    }
+    return p;
+  }, {});
 
-  //todo: need to reduce this to best per segmentId
+  var bestNewSegs = segs.map(s => {
+    result = reducedResults[s.id];
+    return {
+      userId: user._id,
+      userName: user.firstName + " " + user.lastName,
+      segmentName: s.name,
+      activityId: result.activityId,
+      segmentEffortId: result.segmentEffortId,
+      segmentId: result.segmentId,
+      segmentDuration: result.segmentDuration
+    };
+  });
+
+  user.duros.forEach(duro => {
+    console.log("duro", duro);
+    bestNewSegs = bestNewSegs.map(item => item);
+    console.log('best efforts',bestNewSegs);
+    
+    duroRepo.updateOne(
+      {_id: duro._id },
+      { $addToSet: { bestEfforts: { $each: [...bestNewSegs] } } }, (err,result) => {console.log('error',err);console.log('result',result);}
+    );
+
+    /* erases
+    duroRepo.update(
+      { _id: duro._id },
+      {$pull: {bestEfforts: {$exists: true}}},
+      (err,result) => {console.log('error',err);console.log('result',result);}
+    );*/
+  });
+
   
-  segs.forEach(s=> console.log(s.name + " matches", reducedResults[s.id]));
+  athleteRepo.updateOne({_id:user._id}, {$set: {lastProcessed:user.lastProcessed}},(err,result) => {console.log('error',err);console.log('user result',result);});
 
-  
-  //console.log('new results',newResults);
 };
 
 module.exports = updateService;

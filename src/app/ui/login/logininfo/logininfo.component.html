@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Finish Signing In</h2>
+<mat-dialog-content>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="First Name" [(ngModel)]="data.FirstName">
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Last Name" [(ngModel)]="data.LastName">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button mat-dialog-close (click)="closeDialog()">Save and Authorize Strava</button>
+</mat-dialog-actions>

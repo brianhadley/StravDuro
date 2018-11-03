@@ -40,16 +40,5 @@ export class AppComponent {
       )
       .subscribe(result => this.currentUser = result);
   }
-
-  login() {
-    this.authService.login();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  submitUserInfo() {
-    this.userService.saveUserRecord(this.currentUser).subscribe(()=>{window.location.href = 'https://www.strava.com/oauth/authorize?client_id=17465&redirect_uri=http://localhost:4200/redirect&response_type=code&scope=public'});
-  }
+  
 }

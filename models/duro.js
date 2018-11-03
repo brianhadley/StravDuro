@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var user = require("./user");
 
 var DuroSchema = new mongoose.Schema({
+  isUserSubscribed: Boolean,
   duroname: String,
   startdate: Date,
   enddate: Date,
@@ -41,14 +42,14 @@ var DuroSchema = new mongoose.Schema({
   ],
   bestEfforts: [
     {
+      _id: false,
       userId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-      segmentUserComposite: String,
+      userName: String,
       segmentId: Number,
       segmentName: String,
       activityId: Number,
       segmentEffortId: Number,
-      segmentDuration: Number,
-      effortDate: Date
+      segmentDuration: Number
     }
   ]
 });

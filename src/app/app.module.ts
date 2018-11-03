@@ -11,17 +11,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ServicesModule } from './services/services.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material';
+import {MatButtonModule, MatToolbarModule, MatCardModule, MatIconModule } from '@angular/material';
 import { CoreModule } from './core/core.module';
 import { FormsModule } from '@angular/forms';
+import { UiModule } from './ui/ui.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
+    BrowserModule,    
     PagesModule,
     FormsModule,
     SharedModule,
@@ -32,7 +32,12 @@ import { FormsModule } from '@angular/forms';
     NgbModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    CoreModule
+    CoreModule,
+    UiModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatIconModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

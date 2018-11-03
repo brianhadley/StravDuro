@@ -7,6 +7,7 @@ var jwtAuthz = require("express-jwt-authz");
 var jwksRsa = require("jwks-rsa");
 var checkJwt = require("../core/jwtValidation.js");
 var strava = require("strava-v3");
+var from = require('rxjs').from;
 
 router.use(checkJwt);
 
@@ -37,7 +38,7 @@ router.post("/", function(req, res, next) {
 
 router.put("/", function(req, res, next) {
   //todo: this should be factored down to repo or service
-  console.log('in put, why', req);
+  
   user.findOne({ login: req.user.sub }, function(err, foundUser) {
     if (err) return next(err);
     if (!foundUser)
@@ -49,6 +50,8 @@ router.put("/", function(req, res, next) {
       foundUser.stravaToken = token.access_token;
       foundUser.stravaAthleteInfo.userName = token.athlete.username;
       foundUser.stravaAthleteInfo.stravaUserId = token.athlete.id;
+      foundUser.stravaAthleteInfo.profile = token.athlete.profile;
+      foundUser.stravaAthleteInfo.email = token.athlete.email;
       user.findByIdAndUpdate(foundUser._id, foundUser, function(err, post) {
         if (err) return next(err);
         res.json(true);
@@ -63,5 +66,8 @@ router.delete("/:id", function(req, res, next) {
     res.json(post);
   });
 });
+
+
+
 
 module.exports = router;

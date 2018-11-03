@@ -1,14 +1,10 @@
-<!--The content below is only a placeholder and can be replaced.-->
-
-<div class="jumbotron header">
-    <div class="container">
-        <h1>
-            <i class="fa fa-bike" aria-hidden="true"></i>
-            StravDuro!
-        </h1>
-    </div>
+<div class="site-container">
+    <header><div class="header-content"><app-header></app-header></div></header>
+    <aside *ngIf="loggedIn"><mat-card style="height:400px;"><app-myduros></app-myduros></mat-card></aside>
+    <main><router-outlet></router-outlet></main>    
 </div>
-<div *ngIf="loggedIn"><button mat-raised-button (click)="logout()">logout</button></div>
+
+<!--div *ngIf="loggedIn"><button mat-raised-button (click)="logout()">logout</button></div>
 <div *ngIf="!loggedIn"><button mat-raised-button (click)="login()">login</button></div>
 TESTDURO:{{testDuro | json}}
 <div *ngIf="loggedIn && currentUser && currentUser._id == null">
@@ -16,5 +12,4 @@ TESTDURO:{{testDuro | json}}
     <input [(ngModel)]="currentUser.lastName">
     input user stuff {{currentUser|json}}
     <button mat-raised-button (click)="submitUserInfo()">submit info</button>
-</div>
-<router-outlet></router-outlet>
+</div-->

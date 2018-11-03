@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" class="title-toolbar">
+    <div class='title'>
+            <mat-icon class="title-icon">directions_bike</mat-icon>stravduro
+            <img *ngIf="loggedIn && currentUser.stravaAthleteInfo" [src]="currentUser.stravaAthleteInfo.profile" class="login profile"/>
+    </div>
+</mat-toolbar>
+<mat-toolbar color="accent" class="menu-toolbar">
+    <ul role="navigation" class='title main-menu'>
+        <li>
+            <a routerLink='/search' routerLinkActive="active" class='menu-button'><mat-icon class="menu-icon">search</mat-icon><span class="menu-text">find</span></a>
+        </li>
+        <li><a routerLink='/results' routerLinkActive="active" class='menu-button'><mat-icon class="menu-icon">cake</mat-icon><span class="menu-text">results</span></a></li>
+        <li><a routerLink='/about' routerLinkActive="active" class='menu-button'><mat-icon class="menu-icon">question_answer</mat-icon><span class="menu-text">about</span></a></li>
+        <li class="login"><app-login></app-login></li>        
+    </ul>
+</mat-toolbar>
